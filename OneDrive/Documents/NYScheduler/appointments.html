@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <!-- Load an icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Book Appointment</title>
 </head>
 <body>
     <header>
         <h1>NY Health Scheduler</h1>
-        <nav>
-            <a href="home.html">Home</a>    
-            <a href="login.html">Login</a>
-        </nav>
+        <div class="topnav">
+            <a href="home.html"><i class="fa fa-fw fa-home"></i>Home</a>
+            <a href="login.html"><i class="fa fa-fw fa-user"></i>Login</a>
+            <a href="appointments.html"><i class="fa fa-fw fa-calendar"></i>Book Appointments</a>
+            <div class="dropdown">
+                <button class="dropbtn">Dashboard
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="patients.html"><i class="fa fa-fw fa-table"></i>Patient Dashboard</a>
+                    <a href="doctors.html"><i class="fa fa-user-md"></i>Doctor Dashboard</a>
+                </div>
+            </div>
+        </div>
     </header>
     <div class="container">
 
@@ -20,16 +32,16 @@
         <div class="form-container">
             <h2>Book an Appointment</h2>
             <form id="appointmentForm" method="POST" action="/book">
-                <label for = "patient"> Your First and Last Name</label>
-                <input type = "text" id = "patient" name = "patient" required>
+                <label for="patient"><b>Full Name</b></label>
+                <input type="text" placeholder="Enter first and last name" name="patient" id="patient" required>
                 
-                <label for="date">Select Date</label>
+                <label for="date"><b>Select Date</b></label>
                 <input type="date" id="date" name="date" requried>
 
-                <label for="time">Select Time</label>
+                <label for="time"><b>Select Time</b></label>
                 <input type="time" id="time" name="time" required>
 
-                <label for="doctor">Select Doctor</label>
+                <label for="doctor"><b>Select Doctor</b></label>
                 <select id="doctor" name="doctor" required>
                     <option value="select-doctor">--Select doctor--</option>
                     <option value="Smith">Dr. Smith</option>
@@ -37,7 +49,7 @@
                     <option value="Lee">Dr. Lee</option>
                 </select>
 
-                <label for="reason">Reason for Visit</label>
+                <label for="reason"><b>Reason for Visit</b></label>
                 <textarea id="reason" name="reason" required></textarea>
 
                 <button type="submit">Book Appointment</button>

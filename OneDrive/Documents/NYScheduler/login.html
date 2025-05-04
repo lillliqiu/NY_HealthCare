@@ -4,26 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <!-- Load an icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Login</title>
 </head>
 <body>
     <header>
         <h1>NY Health Scheduler</h1>
-        <nav>
-            <a href="home.html">Home</a>
-            <a href="appointments.html">Book Appointment</a>
-        </nav>
+        <div class="topnav">
+            <a href="home.html"><i class="fa fa-fw fa-home"></i>Home</a>
+            <a href="login.html"><i class="fa fa-fw fa-user"></i>Login</a>
+            <a href="appointments.html"><i class="fa fa-fw fa-calendar"></i>Book Appointments</a>
+            <div class="dropdown">
+                <button class="dropbtn">Dashboard
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="patients.html"><i class="fa fa-fw fa-table"></i>Patient Dashboard</a>
+                    <a href="doctors.html"><i class="fa fa-user-md"></i>Doctor Dashboard</a>
+                </div>
+            </div>
+        </div>
     </header>
     <h2>Login</h2>
     <main>
-        <form id="loginForm">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Login</button>
+        <form action="action_page.php" method="post" id="loginForm">
+            <div class="container">
+                <h1>Login</h1>
+                <label for="username"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="username" required>
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" required>
+                <button type="submit">Login</button>
+                <label>
+                    <input type="checkbox" checked="checked" name="remember">Remember me
+                </label>
+            </div>
+            <div class="container" style="background-color:#fff">
+                <span class="password"><a href="#"> Forgot password?</a></span>
+            </div>
+            <div class="container register">
+                <p>Don't have an account? <a href='register.html'>Register here</a></p>
+            </div>
         </form>
-        <p>Don't have an account? <a href='register.html'>Register here</a></p>
     </main>
     <script>
         // In-memory user database

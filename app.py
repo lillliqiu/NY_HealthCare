@@ -4,6 +4,7 @@ import pyodbc
 import os
 from appoinment_feature import create_appt
 from collections import defaultdict
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -13,6 +14,15 @@ conn_str = (
      r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
     rf'DBQ={db_file};'
 )
+db_file1 = os.path.join(base_dir, "Profile.accdb")
+conn_str1 = (
+     r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
+    rf'DBQ={db_file1};'
+)
+
+def get_db_connection():
+    conn = pyodbc.connect(conn_str1)
+    return conn
 
 @app.route('/')
 def root():
@@ -22,12 +32,50 @@ def root():
 def home():
     return render_template('home.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Query the database for the user
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM user WHERE username=?", (username,))
+        patient = cursor.fetchone()
+        conn.close()
+        
+        if patient and check_password_hash(patient[2], password):  # Assuming password is in the 3rd column
+            return render_template('patients.html')  # Render the patient dashboard directly
+        else:
+            return render_template('login.html', error="Invalid credentials. Please try again.")
     return render_template('login.html')
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        username = request.form['regUname']
+        password = request.form['regPassword']
+        confirm_password = request.form['confirmPassword']
+        # Check if passwords match
+        if password != confirm_password:
+            return render_template('register.html', error="Passwords do not match. Please try again.")
+        # Check if username already exists
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM user WHERE username=?", (username,))
+        existing_user = cursor.fetchone()
+        
+        if existing_user:
+            conn.close()
+            return render_template('register.html', error="Username already exists. Please choose a different one.")
+        # Hash the password and create a new user
+        hashed_password = generate_password_hash(password, method='sha256')
+        cursor.execute("INSERT INTO Patient (username, password) VALUES (?, ?)", (username, hashed_password))
+        conn.commit()
+        conn.close()
+        
+        return redirect('/login')  # Redirect to the login page after successful registration
     return render_template('register.html')
 
 @app.route('/patients')

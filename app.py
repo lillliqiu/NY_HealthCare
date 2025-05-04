@@ -210,7 +210,48 @@ def get_doctor_schedules():
     conn1.close()
     return schedules_by_doctor 
 
-   
+@app.route('/patients')
+def patients():
+    conn1 = pyodbc.connect(conn_str)
+    cursor1 = conn1.cursor()
+
+    # Fetching data from Patient and Appointment tables
+    cursor1.execute("""
+        SELECT 
+            p.FirstName,
+            p.LastName,
+            p.DateOfBirth,
+            a.AppointmentDate,
+            a.DoctorName,
+            d.Specialization,
+            a.ReasonForVisit,
+            a.Status,
+            p.PhoneNumber
+        FROM Patient p
+        LEFT JOIN Appointment a ON p.PatientID = a.PatientID
+        LEFT JOIN Doctor d ON a.DoctorID = d.DoctorID
+    """)
+
+    rows = cursor1.fetchall()
+    patients = []
+
+    # Prepare a list of patients with the fetched data
+    for row in rows:
+        patients.append({
+            "first_name": row.FirstName,
+            "last_name": row.LastName,
+            "date_of_birth": row.DateOfBirth,
+            "appointment_date": row.AppointmentDate,
+            "doctor_name": row.DoctorName,
+            "specialization": row.Specialization,
+            "reason_for_visit": row.ReasonForVisit,
+            "status": row.Status,
+            "phone": row.PhoneNumber
+        })
+
+    conn1.close()
+
+    return render_template('patients.html', patients=patients)  
 
 if __name__=='__main__':
     app.run(debug=True, host='0.0.0.0')

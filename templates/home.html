@@ -3,17 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Load an icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Health Scheduler</title>
 </head>
 <body>
     <header>
         <h1>NY Health Scheduler</h1>
-        <nav>
-            <a href="/login">Login</a>
-            <a href="/appointments">Book Appointment</a>
-            <a href="/patients">Patient Dashbaord</a>
-        </nav>
+        <div class="topnav">
+            <a href="home.html"><i class="fa fa-fw fa-home"></i>Home</a>
+            <a href="login.html"><i class="fa fa-fw fa-user"></i>Login</a>
+            <a href="appointments.html"><i class="fa fa-fw fa-calendar"></i>Book Appointments</a>
+            <div class="dropdown">
+                <button class="dropbtn">Dashboard
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="patients.html"><i class="fa fa-fw fa-table"></i>Patient Dashboard</a>
+                    <a href="doctors.html"><i class="fa fa-user-md"></i>Doctor Dashboard</a>
+                </div>
+            </div>
+        </div>
     </header>
     <main>
         <h2>Your health, our priority!</h2>

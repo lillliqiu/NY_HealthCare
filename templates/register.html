@@ -3,30 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Load an icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Register</title>
 </head>
 <body>
     <header>
         <h1>NY Health Scheduler</h1>
-        <nav>
-            <a href="/login">Login</a>
-            <a href="/appointments">Book Appointment</a>
-            <a href="/patients">Patient Dashbaord</a>
-        </nav>
+        <div class="topnav">
+            <a href="home.html"><i class="fa fa-fw fa-home"></i>Home</a>
+            <a href="login.html"><i class="fa fa-fw fa-user"></i>Login</a>
+            <a href="appointments.html"><i class="fa fa-fw fa-calendar"></i>Book Appointments</a>
+            <div class="dropdown">
+                <button class="dropbtn">Dashboard
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="patients.html"><i class="fa fa-fw fa-table"></i>Patient Dashboard</a>
+                    <a href="doctors.html"><i class="fa fa-user-md"></i>Doctor Dashboard</a>
+                </div>
+            </div>
+        </div>
     </header>
     <main>
-        <h2>Register</h2>
-        <form id="registerForm">
-            <label for="registerUsername">Username:</label>
-            <input type="text" id="registerUsername" name="username" required>
-            <label for="registerPassword">Password:</label>
-            <input type="password" id="registerPassword" name="password" required>
-            <label for="registerConfirmPassword">Confirm Password:</label>
-            <input type="password" id="registerConfirmPassword" name="confirmPassword" required>
-            <button type="submit">Register</button>
+        <form action="action_page.php" id="registerForm">
+            <div class="container">
+                <h1>Register</h1>
+                <p>Please fill in this form to create an account.</p>
+                <hr>
+                <label for="regUname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="regUname" id="regUname" required>
+                <label for="regPassword"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="regPassword" id="regPassword" required>
+                <label for="confirmPassword"><b>Confirm Password</b></label>
+                <input type="password" placeholder="Confirm Password" name="confirmPassword" id="confirmPassword" required>
+                <hr>
+                <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+                <button type="submit" class="registerbtn">Register</button>
+            </div>
+            <div class="container signin">
+                <p>Already have an account? <a href="login.html">Sign in</a></p>
+            </div>
         </form>
-        <p>Already have an account? <a href="login.html">Login here</a></p>
     </main>
     <script>
         // In-memory user database

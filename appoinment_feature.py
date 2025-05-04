@@ -1,21 +1,24 @@
-import sqlite3
+
+import pyodbc
+import os
 from datetime import datetime, timedelta
 
-conn = sqlite3.connect(':memory:') #creates temp
-cursor = conn.cursor() #sql commands
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
-cursor.execute(''' 
-    CREATE TABLE Appointments(
-               ID INTEGER PRIMARY KEY AUTOINCREMENT,
-               PatientName TEXT NOT NULL,
-               DoctorName TEXT NOT NULL,
-               AppointmentDate DATE NOT NULL,
-               AppointmentTime TEXT NOT NULL)
-''')
-conn.commit()
+db_file= os.path.join(base_dir, "PatientDatabase","patientapointdb.accdb")
+
+conn_str= (
+    r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
+    rf'DBQ={db_file};'
+)
+
+conn1 = pyodbc.connect(conn_str)
+cursor1 = conn1.cursor()
 
 
-def create_appt(patient_name, doctor_name, date, time):
+
+
+def create_appt(patient_name, doctor_name, date, time, reason):
     try:
         time = datetime.strptime(time, '%H:%M').time()
     except ValueError:
@@ -24,24 +27,17 @@ def create_appt(patient_name, doctor_name, date, time):
     if time < datetime.strptime('8:00', '%H:%M').time() or time > datetime.strptime('20:00', '%H:%M').time():
         return 'NY Health Clinic is only open 8AM - 8PM.'
     
-    cursor.execute('SELECT * FROM Appointments WHERE DoctorName=? AND AppointmentDate=? AND AppointmentTime=?',
+    cursor1.execute('SELECT * FROM Appointment WHERE DoctorName=? AND AppointmentDate=? AND AppointmentTime=?',
                    (doctor_name, date, time.strftime('%H:%M')))
     
-    if cursor.fetchone():
+    if cursor1.fetchone():
         return 'Sorry that time is unavailable please select a different time.'
     
-    cursor.execute('INSERT INTO Appointments (PatientName, DoctorName, AppointmentDate, AppointmentTime) VALUES (?,?,?,?)',
+    cursor1.execute('INSERT INTO Appointment (PatientName, DoctorName, AppointmentDate, AppointmentTime) VALUES (?,?,?,?)',
                    (patient_name, doctor_name, date, time.strftime('%H:%M')))
-    conn.commit()
+    conn1.commit()
 
     return f"Appointment booked for {patient_name} with {doctor_name} at {time.strftime('%H:%M')} on {date}."
-
-# patient_name = input('Enter your name: \n')
-# doctor_name = input('The name of your doctor: \n')
-# date = input('Enter the appointment date (YYYY-MM-DD): \n')
-# time = input('Enter the time of the appointment (HH:MM): \n')
-# test_result = create_appt(patient_name, doctor_name, date, time)
-# print(test_result)
 
 
 def cancel_appt(patient_name, doctor_name, date, time):
@@ -52,19 +48,19 @@ def cancel_appt(patient_name, doctor_name, date, time):
     
     time_str = time.strftime('%H:%M')
     
-    cursor.execute('''
-        SELECT * FROM Appointments
+    cursor1.execute('''
+        SELECT * FROM Appointment
         WHERE PatientName=? AND DoctorName=? AND AppointmentDate=? AND AppointmentTime=?
     ''', (patient_name, doctor_name, date, time_str))
 
-    if not cursor.fetchone():
+    if not cursor1.fetchone():
         return 'Could not find an appointment to cancel'
     
-    cursor.execute('''
-        DELETE FROM Appointments
+    cursor1.execute('''
+        DELETE FROM Appointment
         WHERE PatientName=? AND DoctorName=? AND AppointmentDate=? AND AppointmentTime=?
     ''', (patient_name, doctor_name, date, time_str))
-    conn.commit()
+    conn1.commit()
     return f"Your appointment for {patient_name} at {time_str} on {date} has been cancelled."
 
 def update_appt(patient_name, doctor_name, old_date, old_time, new_date, new_time):
@@ -74,36 +70,36 @@ def update_appt(patient_name, doctor_name, old_date, old_time, new_date, new_tim
     except ValueError:
         return 'Use a 24 hour time format please.'
     
-    cursor.execute('''
-        SELECT * FROM Appointments
+    cursor1.execute('''
+        SELECT * FROM Appointment
         WHERE PatientName=? AND DoctorName=? AND AppointmentDate=? AND AppointmentTime=?
     ''', (patient_name, doctor_name, old_date, old_time.strftime('%H:%M')))
-    if not cursor.fetchone():
+    if not cursor1.fetchone():
         return 'Could not find an appointment.'
     
-    cursor.execute('''
-        SELECT * FROM Appointments
+    cursor1.execute('''
+        SELECT * FROM Appointment
         WHERE DoctorName=? AND AppointmentDate=? AND AppointmentTime=?
     ''', (doctor_name, new_date, new_time.strftime('%H:%M')))
-    if not cursor.fetchone():
+    if not cursor1.fetchone():
         return 'That time is not available.'
     
-    cursor.execute('''
-        UPDATE Appointments
+    cursor1.execute('''
+        UPDATE Appointment
         SET AppointmentDate=?, AppointmentTime=?
         WHERE PatientName=? AND DoctorName=? AND AppointmentDate=? AND AppointmentTime=?
     ''', (new_date, new_time.strftime('%H:%M'), patient_name, doctor_name, old_date, old_time.strftime('%H:%M')))
-    conn.commit()
+    conn1.commit()
     return f"Appointment had been updated from {old_time.strftime('%H:%M')} on {old_date} to {new_time.strftime('%H:%M')} on {new_date}."
 
-# print(cancel_appointement('John Smith', 'DR. R', '2025-04-06', '10:00'))
-# print(update_appointment('John Smith', 'DR. R', '2025-04-06', '10:00', '2025-04-09', '11:30'))
-    
+  
 def view_all_appts(): #Data Analytics feature
-    print('Here are all the appointments.')
-    cursor.execute("SELECT * FROM Appointments")
-    return cursor.fetchall()
+    print('Here are all the Appointment.')
+    cursor1.execute("SELECT * FROM Appointment")
+    return cursor1.fetchall()
     
 
+cursor1.execute("SELECT * FROM Appointment WHERE 1=0;")
+column_names = [desc[0] for desc in cursor1.description]
 
-
+print("Columns in Appointment table:", column_names)

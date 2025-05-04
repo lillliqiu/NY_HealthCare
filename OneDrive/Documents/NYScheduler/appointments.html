@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Book Appointment</title>
+</head>
+<body>
+    <header>
+        <h1>NY Health Scheduler</h1>
+        <nav>
+            <a href="home.html">Home</a>    
+            <a href="login.html">Login</a>
+        </nav>
+    </header>
+    <div class="container">
+
+        <!-- Appointment Form -->
+        <div class="form-container">
+            <h2>Book an Appointment</h2>
+            <form id="appointmentForm" method="POST" action="/book">
+                <label for = "patient"> Your First and Last Name</label>
+                <input type = "text" id = "patient" name = "patient" required>
+                
+                <label for="date">Select Date</label>
+                <input type="date" id="date" name="date" requried>
+
+                <label for="time">Select Time</label>
+                <input type="time" id="time" name="time" required>
+
+                <label for="doctor">Select Doctor</label>
+                <select id="doctor" name="doctor" required>
+                    <option value="select-doctor">--Select doctor--</option>
+                    <option value="Smith">Dr. Smith</option>
+                    <option value="Johnson">Dr. Johnson</option>
+                    <option value="Lee">Dr. Lee</option>
+                </select>
+
+                <label for="reason">Reason for Visit</label>
+                <textarea id="reason" name="reason" required></textarea>
+
+                <button type="submit">Book Appointment</button>
+            </form>
+        </div>
+        <!-- Static Appointment List-->
+        <h2>Upcoming Appointments</h2>
+        <ul id="appointmentsList"></ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Doctor</th>
+                    <th>Reason for Visit</th>
+                </tr>
+            </thead>
+            <tbody id="appointmentsTableBody"></tbody>
+        </table>
+    </div>
+    <script>
+        // Array to hold booked appointments
+        const appointments = [];
+
+        document.getElementById('appointmentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const doctor = document.getElementById('doctor').value;
+            const reason = document.getElementById('reason').value;
+
+            // Create an appointment object
+            const appointment = {
+                date: date,
+                time: time,
+                doctor: doctor,
+                reason: reason
+            };
+
+            // Add the appointment to the array
+            appointments.push(appointment);
+            // Update the appointments table
+            updateAppointmentsTable();
+            // Reset the form
+            document.getElementById('appointmentForm').reset();
+        });
+
+        function updateAppointmentsTable() {
+            const appointmentsTableBody = document.getElementById('appointmentsTableBody');
+            appointmentsTableBody.innerHTML = ''; // Clear the current table body
+
+            // Loop through the appointments and create table rows
+            appointments.forEach((appointment) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${appointment.date}</td>
+                    <td>${appointment.time}</td>
+                    <td>${appointment.doctor}</td>
+                    <td>${appointment.reason}</td>
+                `;
+                appointmentsTableBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>

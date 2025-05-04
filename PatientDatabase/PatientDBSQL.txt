@@ -1,0 +1,110 @@
+—-SQL code for creating table in MS Access 
+
+CREATE TABLE Zipcode
+(
+    ZipCode    VARCHAR(10) NOT NULL,
+    City       VARCHAR(36),
+    State      VARCHAR(4),
+    CONSTRAINT pk_zipcode
+          PRIMARY KEY (ZipCode)
+);
+
+CREATE TABLE Department
+(
+    DepartmentID    VARCHAR(10) NOT NULL,
+    DepartmentName  VARCHAR(35),
+    CONSTRAINT pk_department
+          PRIMARY KEY (DepartmentID)
+);
+
+CREATE TABLE Patient
+(
+    PatientID    VARCHAR(10) NOT NULL,
+    FirstName    VARCHAR(40),
+    LastName     VARCHAR(40),
+    DateOfBirth  DATE,
+    Gender       VARCHAR(2),
+    PhoneNumber  VARCHAR(10),
+    Insurance    VARCHAR(15),
+    Street       VARCHAR(35),
+    ZipCode      VARCHAR(10),
+    CONSTRAINT pk_patient
+          PRIMARY KEY (PatientID)
+);
+
+CREATE TABLE Appointment
+(
+    AppointmentID    VARCHAR(10) NOT NULL,
+    AppointmentDate  DATE,
+    AppointmentTime  TIME,
+    ReasonForVisit   VARCHAR(100),
+    PatientID        VARCHAR(10) NOT NULL,
+    DepartmentID     VARCHAR(10) NOT NULL,
+    DoctorID         VARCHAR(10) NOT NULL,
+    CONSTRAINT pk_appointment
+          PRIMARY KEY (AppointmentID)
+);
+
+
+
+CREATE TABLE Doctor
+(
+    DoctorID    VARCHAR(10) NOT NULL,
+    FirstName   VARCHAR(40),
+    LastName    VARCHAR(40),
+    Role        VARCHAR(50),
+    DepartmentID VARCHAR(10) NOT NULL,
+    CONSTRAINT pk_doctor
+          PRIMARY KEY (DoctorID)
+);
+
+— Create Foreign Key and link tables together 
+
+ALTER TABLE Patient
+   ADD CONSTRAINT fk_patient_zipcode
+     FOREIGN KEY (ZipCode)
+        REFERENCES Zipcode (ZipCode);
+
+ALTER TABLE Appointment
+   ADD CONSTRAINT fk_appointment_patient
+     FOREIGN KEY (PatientID)
+        REFERENCES Patient (PatientID);
+
+ALTER TABLE Appointment
+   ADD CONSTRAINT fk_appointment_department
+     FOREIGN KEY (DepartmentID)
+        REFERENCES Department (DepartmentID);
+
+ALTER TABLE Appointment
+   ADD CONSTRAINT fk_appointment_doctor
+     FOREIGN KEY (DoctorID)
+        REFERENCES Doctor (DoctorID);
+
+ALTER TABLE Doctor
+   ADD CONSTRAINT fk_doctor_department
+     FOREIGN KEY (DepartmentID)
+        REFERENCES Department (DepartmentID);
+ALTER TABLE Patient
+   ADD CONSTRAINT fk_patient_zipcode
+     FOREIGN KEY (ZipCode)
+        REFERENCES Zipcode (ZipCode);
+
+ALTER TABLE Appointment
+   ADD CONSTRAINT fk_appointment_patient
+     FOREIGN KEY (PatientID)
+        REFERENCES Patient (PatientID);
+
+ALTER TABLE Appointment
+   ADD CONSTRAINT fk_appointment_department
+     FOREIGN KEY (DepartmentID)
+        REFERENCES Department (DepartmentID);
+
+ALTER TABLE Appointment
+   ADD CONSTRAINT fk_appointment_doctor
+     FOREIGN KEY (DoctorID)
+        REFERENCES Doctor (DoctorID);
+
+ALTER TABLE Doctor
+   ADD CONSTRAINT fk_doctor_department
+     FOREIGN KEY (DepartmentID)
+        REFERENCES Department (DepartmentID);

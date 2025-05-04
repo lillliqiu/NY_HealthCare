@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Login</title>
+</head>
+<body>
+    <header>
+        <h1>NY Health Scheduler</h1>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="appointments.html">Book Appointment</a>
+        </nav>
+    </header>
+    <h2>Login</h2>
+    <main>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href='register.html'>Register here</a></p>
+    </main>
+    <script>
+        // In-memory user database
+        const users = [];
+        //Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            // Simulate a login check
+            if (username == 'user1' && password == 'password1') {
+                // Redirect to appointments page on successful login
+                window.location.href = 'appointments.html';
+            } else {
+                alert('Invalid credentials! Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

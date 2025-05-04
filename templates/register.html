@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Register</title>
+</head>
+<body>
+    <header>
+        <h1>NY Health Scheduler</h1>
+        <nav>
+            <a href="/login">Login</a>
+            <a href="/appointments">Book Appointment</a>
+            <a href="/patients">Patient Dashbaord</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Register</h2>
+        <form id="registerForm">
+            <label for="registerUsername">Username:</label>
+            <input type="text" id="registerUsername" name="username" required>
+            <label for="registerPassword">Password:</label>
+            <input type="password" id="registerPassword" name="password" required>
+            <label for="registerConfirmPassword">Confirm Password:</label>
+            <input type="password" id="registerConfirmPassword" name="confirmPassword" required>
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </main>
+    <script>
+        // In-memory user database
+        const users = [];
+        //Handle registration form submission
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match! Please try again.');
+                return;
+            }
+            // Check if username already exists
+            if (users.find(user => user.username === username)) {
+                alert('Username already exists! Please choose a different one.');
+                return;
+            }
+            // Add new user to the simulated database
+            users.push({ username, password });
+            alert('Registration successful! You can now log in.');
+            document.getElementById('registerForm').reset(); // Reset the registration form
+        });
+    </script>
+</body>
+</html>

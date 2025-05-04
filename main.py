@@ -1,13 +1,5 @@
 from appoinment_feature import create_appt, cancel_appt, update_appt, view_all_appts
 
-#Put the main code
-
-
-#Create Appointment 
-
-
-#User profile
-
 #See analytics 
 
 

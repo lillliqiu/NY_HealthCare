@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Patient Dashboard</title>
+</head>
+<body>
+    <header>
+        <h1>Patient Dashboard</h1>
+        <nav>
+            <a href="login.html">Login</a>
+            <a href="appointments.html">Book Appointment</a>
+            <a href="patient_dashboard.html">Patient Dashboard</a>
+            <a href="doctors.html">Doctor Dashboard</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Welcome, [Patient Name]</h2> <!-- Replace with dynamic patient name -->
+            <p>Here's a summary of your health and upcoming appointments.</p>
+        </section>
+
+        <section>
+            <h3>Your Appointments</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Appointment Date</th>
+                        <th>Doctor</th>
+                        <th>Specialization</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>MM/DD/YYYY</td> <!-- Replace with dynamic date -->
+                        <td>Dr. [Doctor Name]</td> <!-- Replace with doctor name -->
+                        <td>[Specialization]</td> <!-- Replace with specialization -->
+                        <td>[Status]</td> <!-- Replace with appointment status -->
+                    </tr>
+                    <tr>
+                        <td>MM/DD/YYYY</td> <!-- Replace with dynamic date -->
+                        <td>Dr. [Doctor Name]</td> <!-- Replace with doctor name -->
+                        <td>[Specialization]</td> <!-- Replace with specialization -->
+                        <td>[Status]</td> <!-- Replace with appointment status -->
+                    </tr>
+                    <!-- More appointments can be added dynamically -->
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h3>Your Doctors</h3>
+            <div class="doctor-list">
+                <div class="doctor">
+                    <h4>Dr. [Doctor Name]</h4>
+                    <p><strong>Specialization:</strong> [Specialization]</p>
+                    <p><strong>Contact:</strong> [Phone Number]</p>
+                    <p><strong>Email:</strong> [Email]</p>
+                    <p><strong>Office Hours:</strong> [Office Hours]</p>
+                    <a href="appointments.html">Book an Appointment</a>
+                </div>
+
+                <div class="doctor">
+                    <h4>Dr. [Doctor Name]</h4>
+                    <p><strong>Specialization:</strong> [Specialization]</p>
+                    <p><strong>Contact:</strong> [Phone Number]</p>
+                    <p><strong>Email:</strong> [Email]</p>
+                    <p><strong>Office Hours:</strong> [Office Hours]</p>
+                    <a href="appointments.html">Book an Appointment</a>
+                </div>
+                <!-- More doctors can be added dynamically -->
+            </div>
+        </section>
+
+        <section>
+            <h3>Manage Your Profile</h3>
+            <p>If you want to update your personal information, <a href="update_profile.html">click here</a> to edit your profile.</p>
+        </section>
+
+        <section>
+            <h3>Health Records</h3>
+            <p>Your health records are available. To view them, <a href="health_records.html">click here</a>.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 NY Health Scheduler. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

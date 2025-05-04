@@ -1,0 +1,55 @@
+
+
+--Enter Data into MS Access 
+
+--Enter the code below to add Data to the Zipcode table (one at a time)
+
+INSERT INTO Zipcode VALUES ('10001', 'Manhattan', 'NY');
+INSERT INTO Zipcode VALUES ('10010', 'Manhattan', 'NY');
+INSERT INTO Zipcode VALUES ('11434', 'Queens', 'NY');
+INSERT INTO Zipcode VALUES ('11369', 'Queens', 'NY');
+INSERT INTO Zipcode VALUES ('11206', 'Brooklyn', 'NY');
+INSERT INTO Zipcode VALUES ('11201', 'Brooklyn', 'NY');
+INSERT INTO Zipcode VALUES ('10458', 'Bronx', 'NY');
+INSERT INTO Zipcode VALUES ('10475', 'Bronx', 'NY');
+
+--Enter the code below to add Data to the Department  table 
+
+INSERT INTO Department VALUES ('D397', 'Neurologist');
+INSERT INTO Department VALUES ('D477', 'General Practitioner');
+INSERT INTO Department VALUES ('D404', 'Cardiologist');
+INSERT INTO Department VALUES ('D344', 'Oncologist');
+INSERT INTO Department VALUES ('D372', 'Dermatologist');
+INSERT INTO Department VALUES ('D244', 'Psychiatrist');
+INSERT INTO Department VALUES ('D117', 'Pediatrician');
+
+--Enter the code below to add Data to the Doctor table 
+
+INSERT INTO Doctor VALUES ('E1', 'John', 'Smith', 'Neurologist', 'D397');
+INSERT INTO Doctor VALUES ('E2', 'Andre', 'Cole', 'General Practitioner', 'D477');
+INSERT INTO Doctor VALUES ('E3', 'Paulette', 'Weber', 'General Practitioner', 'D477');
+INSERT INTO Doctor VALUES ('E4', 'Earl', 'Devine', 'Oncologist', 'D344');
+INSERT INTO Doctor VALUES ('E5', 'Adrian', 'Simons', 'Cardiologist', 'D404');
+INSERT INTO Doctor VALUES ('E6', 'Maria', 'Fowler', 'Cardiologist', 'D404');
+INSERT INTO Doctor VALUES ('E7', 'Nancy', 'McDonald', 'Dermatologist', 'D372')
+INSERT INTO Doctor VALUES ('E8', 'Steve', 'Kim', 'Psychiatrist', 'D244');
+INSERT INTO Doctor VALUES ('E9', 'Taylor', 'Hensly', 'Pediatrician', 'D117');
+
+--Enter the code below to add Data to the Patient table 
+
+INSERT INTO Patient VALUES ('P100','Tom', 'Manning', '01/26/1995', 'M', '667-573-7057','Blue Cross Blue Sheild','105 W 29th St', '10001');
+INSERT INTO Patient VALUES ('P101','Valery', 'Williams', '05/12/2000', 'F', '592-872-1524','Kaiser Permanente','3533 Ropes Ave #2', '10475');
+INSERT INTO Patient VALUES ('P102','Kathy', 'Frank', '11/29/1976', ' F', '365-438-0950','Cigna','188 Humboldt St #4A', '11206');
+INSERT INTO Patient VALUES ('P103','Raymond', 'Hanson', '07/22/1989', 'M', '381-509-0637','Healthfirst','25-17 87th ST #1', '11369');
+INSERT INTO Patient VALUES ('P104','Skyler', 'Douglass', '04/17/2001', 'O', '782-653-4923','GuideWell','30 Waterside Plz', '10010');
+INSERT INTO Patient VALUES ('P105','Andreas', 'Klein', '02/08/2012', 'M', '529-814-0640','UnitedHealthcare','160 Front St', '11201');
+
+--Enter the code below to add Data to the Appointment table 
+
+INSERT INTO Appointment VALUES ('A201', '02/25/2025', '11:30:00 AM', 'Chemotherapy','P102','D344','E4');
+INSERT INTO Appointment VALUES ('A202', '03/21/2025', '12:30:00 PM', 'CT scan','P100','D397','E1');
+INSERT INTO Appointment VALUES ('A270', '04/12/2025', '01:40:00 PM', 'High blood pressure','P102','D404','E6');
+INSERT INTO Appointment VALUES ('A290', '05/24/2025', '02:30:00 PM', 'Blood test','P103','D477','E2');
+INSERT INTO Appointment VALUES ('A300', '06/10/2025', '7:30:00 AM', 'Vaccinations','P101','D477','E3');
+INSERT INTO Appointment VALUES ('A310', '09/24/2025', '9:30:00 AM', 'Acne','P104','D372','E7');
+INSERT INTO Appointment VALUES ('A314', '09/5/2025', '7:00:00 AM', 'Checkup','P105','D117','E9');

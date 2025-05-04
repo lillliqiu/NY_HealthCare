@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Book Appointment</title>
+</head>
+<body>
+    <header>
+        <h1>NY Health Scheduler</h1>
+        <nav>
+            <a href="/login">Login</a>
+            <a href="/appointments">Book Appointment</a>
+            <a href="/patients">Patient Dashbaord</a>
+            <a href="/doctors">Doctor Dashbaord</a>
+        </nav>
+    </header>
+    <div class="container">
+
+        <!-- Appointment Form -->
+        <div class="form-container">
+            <h2>Book an Appointment</h2>
+            <form id="appointmentForm" method="POST" action="/book">
+                <label for = "patient"> Your First and Last Name</label>
+                <input type = "text" id = "patient" name = "patient" required>
+
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+                
+                <label for="date">Select Date</label>
+                <input type="date" id="date" name="date" required>
+
+                <label for="time">Select Time</label>
+                <input type="time" id="time" name="time" required>
+
+                <label for="doctor">Select Doctor</label>
+                <select id="doctor" name="doctor" required>
+                    <option value="select-doctor">--Select doctor--</option>
+                    {% for doctor in doctors %}  
+                    <option value ="{{ doctor }}">Dr. {{ doctor }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="reason">Reason for Visit</label>
+                <textarea id="reason" name="reason" required></textarea>
+
+                <button type="submit">Book Appointment</button>
+            </form>
+        </div>
+
+        <!-- Update Form -->
+
+        <div id="updateFormPopup" class="form-container" style="display: none; border: 2px solid #ccc; padding: 15px; margin-top: 20px;">
+            <h2>Update Appointment</h2>
+            <form id="updateAppointmentForm">
+                <input type="hidden" id="update-id">
+
+                <label for="update-patient">Your First and Last Name</label>
+                <input type="text" id="update-patient" name="patient" required>
+
+                <label for="update-phone">Phone Number</label>
+                <input type="tel" id="update-phone" name="phone" required>
+
+                <label for="update-date">Select Date</label>
+                <input type="date" id="update-date" name="date" required>
+
+                <label for="update-time">Select Time</label>
+                <input type="time" id="update-time" name="time" required>
+
+                <label for="update-doctor">Select Doctor</label>
+                <select id="update-doctor" name="doctor" required>
+                    <option value="select-doctor">--Select doctor--</option>
+                    {% for doctor in doctors %}
+                    <option value="{{doctor}}">Dr. {{doctor}}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="update-reason">Reason for Visit</label>
+                <textarea id="update-reason" name="reason" required></textarea>
+
+                <button type="submit">Save Changes</button>
+                <button type="button" onclick="closeUpdateForm()">Cancel</button>
+            </form>
+        </div>
+        <!-- Static Appointment List-->
+         
+        <h2>Upcoming Appointments</h2>
+        <!-- <ul id="appointmentsList"></ul> -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Phone Number</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Doctor</th>
+                    <th>Reason for Visit</th>
+                    <th>Delete & Update</th>
+                </tr>
+            </thead>
+            <tbody id="appointmentsTableBody">
+                {% for appt in appointments %}  
+                <tr>
+                    <td>{{appt.patient }}</td>
+                    <td>{{appt.phone }}</td>
+                    <td>{{appt.date }}</td>
+                    <td>{{appt.time }}</td>
+                    <td>{{appt.doctor }}</td>
+                    <td>{{appt.reason }}</td>
+                    <td>
+                        <button onclick="confirmDelete('{{ appt.AppointmentID }}')">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <script>
+        async function getApptsFromDB() {
+            try {
+                const response = await fetch('/api/appointments');
+                console.log('Repsonse: ', response);
+
+                if (!response.ok){
+                    throw new Error('Cannot get appointments.');
+                }
+
+                const appointments = await response.json();
+                console.log('Appointments: ', appointments);
+
+                const appointmentsTableBody = document.getElementById('appointmentsTableBody');
+                appointmentsTableBody.innerHTML = '';
+
+                    
+                appointments.forEach((appointment) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${appointment.patient}</td>
+                        <td>${appointment.phone}</td>
+                        <td>${appointment.date}</td>
+                        <td>${appointment.time}</td>
+                        <td>${appointment.doctor}</td>
+                        <td>${appointment.reason}</td>
+                        <td>
+                            <button onclick="confirmDelete('${appointment.AppointmentID}')">Delete</button>
+                            <button onclick='showUpdateForm(${JSON.stringify(appointment)})'>Update</button>
+                        </td>
+                    `;
+                    appointmentsTableBody.appendChild(row);
+                });
+
+
+            } catch (error) {
+                console.error('Error', error);
+            }
+           
+            
+
+        }
+        
+        document.getElementById('appointmentForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = {
+                patient: document.getElementById('patient').value,
+                phone: document.getElementById('phone').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                doctor: document.getElementById('doctor').value,
+                reason: document.getElementById('reason').value
+            };
+
+            const response = await fetch('/book', {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                document.getElementById('appointmentForm').reset();
+                await getApptsFromDB();
+            } else {
+                alert('Cannot book the appointment.');
+            }
+            
+        });
+
+        window.onload = getApptsFromDB;
+
+        function confirmDelete(id) {
+            if (confirm("Do you want to delete this appointment? Once you do it will be deleted forever.")) {
+                fetch(`/delete/${id}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            getApptsFromDB();
+                        } else {
+                            alert("Was not able to delete appointment.");
+                        }
+                    });
+            }
+        }
+
+        function showUpdateForm(appointment) {
+            document.getElementById('update-id').value = appointment.AppointmentID;
+            document.getElementById('update-patient').value = appointment.patient;
+            document.getElementById('update-phone').value = appointment.phone;
+            document.getElementById('update-date').value = appointment.date;
+            document.getElementById('update-time').value = appointment.time;
+            document.getElementById('update-doctor').value = appointment.doctor;
+            document.getElementById('update-reason').value = appointment.reason;
+            document.getElementById('updateFormPopup').style.display = 'block';
+
+        }
+
+        function closeUpdateForm(){
+            document.getElementById('updateFormPopup').style.display= 'none';
+        }
+
+        document.getElementById('updateAppointmentForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const updatedData = {
+                id: document.getElementById('update-id').value,
+                patient: document.getElementById('update-patient').value,
+                phone: document.getElementById('update-phone').value,
+                date: document.getElementById('update-date').value,
+                time: document.getElementById('update-time').value,
+                doctor: document.getElementById('update-doctor').value,
+                reason: document.getElementById('update-reason').value
+            };
+
+            const response = await fetch(`/update/${updatedData.id}`, {
+                method: 'PUT', 
+                headers: {
+                    'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify(updatedData)
+            });
+
+            if (response.ok) {
+                closeUpdateForm()
+                await getApptsFromDB();
+            } else {
+                alert('Could not update appointment.');
+            }
+            
+        });
+
+
+
+
+    </script>
+</body>
+</html>

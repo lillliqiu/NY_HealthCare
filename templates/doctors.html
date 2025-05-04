@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Book Appointment</title>
+</head>
+<body>
+    <header>
+        <h1>NY Health Scheduler</h1>
+        <nav>
+            <a href="/login">Login</a>
+            <a href="/appointments">Book Appointment</a>
+            <a href="/patients">Patient Dashbaord</a>
+            <a href="/doctors">Doctor Dashbaord</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Doctor</h2>
+        <div class="grid-container">
+            {% set doctors = [
+                {"name": "John Smith", "title": "Neurologist", "img": "doc1.png"},
+                {"name": "Andre Cole", "title": "General Practitioner", "img": "doc2.png"},
+                {"name": "Paulette Weber", "title": "General Practitioner", "img": "doc6.png"},
+                {"name": "Earl Devine", "title": "Oncologist", "img": "doc3.jpg"},
+                {"name": "Andrian Simons", "title": "General Cardiologist", "img": "doc4.jpg"},
+                {"name": "Maria Fowler", "title": "Cardiologist", "img": "doc7.png"},
+                {"name": "Nancy McDonald", "title": "Dermatologist", "img": "doc8.png"},
+                {"name": "Steve Kim", "title": "Psychiatrist", "img": "doc5.jpg"},
+                {"name": "Taylor Hensly", "title": "Pediatrician", "img": "doc9.jpg"}
+            ] %}
+
+            {% for doctor in doctors %}
+                <div class="grid-item">
+                    <img src="{{ url_for('static', filename='images/' ~ doctor.img) }}" height="100" width="100">
+                    <h4>{{ doctor.name }}<br>{{ doctor.title }}</h4>
+                    <p><strong>Schedule:</strong></p>
+                    <ul>
+                        {% for sched in schedules.get(doctor.name, []) %}
+                            <li>{{ sched }}</li>
+                        {% else %}
+                            <li>No upcoming appointments</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+        
+    </main>
+</body>
+</html>
